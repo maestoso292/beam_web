@@ -1,103 +1,46 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
-    
-    <!-- DO NOT EDIT FOLLOWING SCRIPTS -->
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/7.24.0/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/7.24.0/firebase-auth.js"></script>
-    <script defer src="/__/firebase/7.24.0/firebase-database.js"></script>
-    <script defer src="/__/firebase/7.24.0/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/7.24.0/firebase-storage.js"></script>
-    <script defer src="/__/firebase/7.24.0/firebase-analytics.js"></script>
-    <script defer src="/__/firebase/7.24.0/firebase-remote-config.js"></script>
-    <script defer src="/__/firebase/7.24.0/firebase-performance.js"></script>
-    <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
-    <!-- END OF REQUIRED SCRIPTS -->
-    
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
-    </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
-    
-    <!-- Not sure if following script is necessary. Probably not -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+    <head>
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-        }
-      });
-    </script>
-    
-    <!--
-    DON'T DELETE THIS SCRIPT
-    THIS IS TO ACCESS THE DATABASE
-    YOU MAY MOVE THIS AROUND
-    -->
-    <script>
-     const firebaseConfig = {
-      apiKey: "AIzaSyBmrrr9ShVMaeS4aNV6gdK52fovQnLd1eA",
-      authDomain: "beam-5845a.firebaseapp.com",
-      databaseURL: "https://beam-5845a.firebaseio.com",
-      projectId: "beam-5845a",
-      storageBucket: "beam-5845a.appspot.com",
-    };
-    firebase.initializeApp(config)
-    // Get a reference to the database
-    var database = firebase.database();
-    </script>
-    
-    <h1> TESTING 3.0 </h1>
-  </body>
+    </head>
+    <body>
+        <script src="https://www.gstatic.com/firebasejs/5.7.9/firebase.js"></script>
+        <script>
+            var config = {
+                apiKey: "AIzaSyBmrrr9ShVMaeS4aNV6gdK52fovQnLd1eA",
+                authDomain: "beam-5845a.firebaseapp.com",
+                databaseURL: "https://beam-5845a.firebaseio.com",
+                projectId: "beam-5845a",
+                storageBucket: "beam-5845a.appspot.com",
+                messagingSenderId: "77499735722",
+                appId: "1:77499735722:web:bfd8be3df0080bee077ad3",
+                measurementId: "G-XKPK4PNM7W"
+            };
+            firebase.initializeApp(config);
+                function writeData() {
+                    firebase.database().ref("Lecturer").set({
+                        name: document.getElementById("Name").value,
+                        email: document.getElementById("Email").value,
+                        password: document.getElementById("Password").value
+                    });
+                    getData();
+                }
+                function getData() {
+                    firebase.database().ref('/').once('value', function(snapshot) {
+                        snapshot.forEach(function(userSnapshot)
+                        {
+                            var userKey = userSnapshot.key;
+                            var userData = userSnapshot.val();
+                            document.getElementById("Data").innerHTML = "Name: " + userData['Name'] + "\n" + "Email: " + userData['Email'] + "\n" + "Password: " + userData['Password'];
+                        })
+                    })
+                }
+                getData();
+        </script>
+        <h1>Lecturer Data</h1>
+        <input type = "text" placeholder = "Name" id = "nameField">
+        <input type = "text" placeholder = "Email" id = "emailField">
+        <input type = "text" placeholder = "Password" id = "passwordField">
+        <button onclick = "writeData()">Submit</button>
+        <p id = "Data"></p>
+    </body>
 </html>
