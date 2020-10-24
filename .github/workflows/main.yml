@@ -1,8 +1,7 @@
 # https://medium.com/@puuga/deploy-to-firebase-hosting-with-github-actions-f795785fde6b
 name: deploy_to_firebase_hosting
 
-on: 
-  push:
+on: push
 jobs:
   deploy_to_firebase_hosting:
 
