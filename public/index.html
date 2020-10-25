@@ -31,9 +31,9 @@
             firebase.initializeApp(config);
                 function writeData() {
                     firebase.database().ref("Lecturer").set({
-                        name: document.getElementById("Name").value,
-                        email: document.getElementById("Email").value,
-                        password: document.getElementById("Password").value
+                        name: document.getElementById("nameField").value,
+                        email: document.getElementById("emailField").value,
+                        password: document.getElementById("passwordField").value
                     });
                     getData();
                 }
