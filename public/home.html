@@ -4,23 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Beam | Login</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/vue-router"></script>
+    <title>Beam | Admin</title>
 </head>
 <body>
-<div class="container">
-    <h1>Beam Administration Login</h1>
-    <div class="textbox">
-        <input type="email" id = "email" placeholder="Email">
+<div id="app" style="margin-top: 50px;">
+
+    <nav style="background-color: lightskyblue;">
+        <div>
+            <ul>
+                <li> <router-link class="nav-link" to="/"> Home </router-link> </li>
+                <li> <router-link class="nav-link" to="student"> Student </router-link> </li>
+                <li> <router-link class="nav-link" to="lecturer"> Lecturer </router-link> </li>
+                <li> <router-link class="nav-link" to="timetable"> Timetable </router-link> </li>
+                <li><input type = "button" onclick="logOut()" id = "logout" value ="Log Out"></li>
+            </ul>
+        </div>
+    </nav>
+    <div style="margin-top: 20px;">
+        <router-view></router-view>
     </div>
-    <div class="textbox">
-        <input type="password" id = "password" placeholder="Password">
-    </div>
-    <br>
-    <input type = "button" onclick="login()" id = "login" value ="Login" class="button">
 </div>
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
+<!-- Firebase functions -->
 <script>
+    var userid;
     var config = {
         apiKey: "AIzaSyBmrrr9ShVMaeS4aNV6gdK52fovQnLd1eA",
         authDomain: "beam-5845a.firebaseapp.com",
@@ -32,23 +44,120 @@
         measurementId: "G-XKPK4PNM7W"
     };
     firebase.initializeApp(config);
-    const auth = firebase.auth();
-    function login(){
+    async function writeStudentData() {
+        var fName = document.getElementById("fName");
+        var lName = document.getElementById("lName");
+        var career = document.getElementById("career");
+        var programme = document.getElementById("programme");
         var email = document.getElementById("email");
         var password = document.getElementById("password");
-        const promise = auth.signInWithEmailAndPassword(email.value, password.value);
+        const promise = await firebase.auth().createUserWithEmailAndPassword(email.value, password.value)
         promise.catch(e => alert(e.message));
+        var student = {
+            FirstName: fName.value,
+            LastName: lName.value,
+            Career: career.value,
+            Programme: programme.value,
+            Email: email.value,
+            uid: userid.value
+        };
+        writeUserData(student);
+    };
+    firebase.auth().onAuthStateChanged(user => {  if(user) {
+        userid = user.uid;  }
+    })
+    function writeUserData(user) {
+        firebase.database().ref('student/' + user.uid).set(user).catch(error => {
+            console.log(error.message)
+        });
+    };
+</script>
+<script>
+    function logOut(){
+        firebase.auth().signOut();
+        window.location.href = 'index.html';
     }
 
-    auth.onAuthStateChanged(user => {
-        if(user) {
-            window.location.href = 'home.html';
-        }
-    });
-    auth.setPersistence(firebase.auth.Auth.Persistence.NONE)
-        .then(function() {
-            return auth.signInWithEmailAndPassword(email, password);
-        });
 </script>
 </body>
-<html>
+<!-- Home Component -->
+<script type="text/x-template" id="home-template">
+    <div><h1>Home</h1><p>This is BEAM Home.</p></div>
+</script>
+<!-- Student Component -->
+<script type="text/x-template" id="student-template">
+    <div><h1>Update Student Information</h1>
+        <label for="fName">First Name:</label>
+        <input type="text" id = "fName" placeholder="First Name"><br>
+        <label for="lName">Last Name:</label>
+        <input type="text" id = "lName" placeholder="Last Name"><br>
+        <label for="career">Choose a career:</label>
+        <select id="career" name="career">
+            <option value="Foundation">Foundation</option>
+            <option value="Undergraduate">Undergraduate</option>
+            <option value="Postgraduate">Postgraduate</option>
+        </select><br>
+        <label for="programme">Choose a programme:</label>
+        <select id="programme" name="programme">
+            <option value="Computer Science">Computer Science</option>
+            <option value="Business">Business</option>
+            <option value="Engineering">Engineering</option>
+        </select><br>
+        <label for="email">Email:</label>
+        <input type="email" id = "email" placeholder="Email">
+        <label for="password">Password:</label>
+        <input type="password" id = "password" placeholder="Password">
+        <input type = "button" onclick="writeStudentData()" id = "submit" value ="Submit">
+    </div>
+</script>
+<!-- Lecturer Component -->
+<script type="text/x-template" id="lecturer-template">
+    <div><h1>Update Lecturer Information</h1><p>This is for lecturer.</p></div>
+</script>
+<!-- Timetable Component -->
+<script type="text/x-template" id="timetable-template">
+    <div><h1>Schedule Timetable</h1><p>This is for timetable.</p></div>
+</script>
+<!-- 404 Not found component -->
+<script type="text/x-template" id="notFound-template">
+    <div><h1>404 Not Found. <a href = "home.html">Return to Home.</h1></div>
+</script>
+<!-- Referencing the components to template -->
+<script>
+    var Home = {
+        template: "#home-template"
+    };
+    var Student = {
+        template: "#student-template"
+    };
+    var Lecturer = {
+        template: "#lecturer-template"
+    };
+    var Timetable = {
+        template: "#timetable-template"
+    };
+    var NotFoundComponent = {
+        template: "#notFound-template"
+    }
+</script>
+<!-- Routing path for navigation bar -->
+<script>
+    var routes = [
+        { path: '/', component: Home },
+        { path: '/student', component: Student },
+        { path: '/lecturer', component: Lecturer },
+        { path: '/timetable', component: Timetable },
+    ];
+
+    var router = new VueRouter({
+        routes: routes,
+        mode: 'history',
+        base: '/'
+    });
+    var app = new Vue({
+        el: '#app',
+        router: router
+    })
+</script>
+</body>
+</html>
