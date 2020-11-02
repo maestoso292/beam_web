@@ -51,21 +51,21 @@
         var programme = document.getElementById("programme");
         var email = document.getElementById("email");
         var password = document.getElementById("password");
-        const promise = await firebase.auth().createUserWithEmailAndPassword(email.value, password.value)
+        const promise = await firebase.auth().createUserWithEmailAndPassword(email.value, password.value);
         promise.catch(e => alert(e.message));
+        firebase.auth().onAuthStateChanged(user => {  if(user) {
+        userid = user.uid;  }
+        })
         var student = {
             FirstName: fName.value,
             LastName: lName.value,
             Career: career.value,
             Programme: programme.value,
             Email: email.value,
-            uid: 2
+            uid: userid.value
         };
         writeUserData(student);
     };
-    firebase.auth().onAuthStateChanged(user => {  if(user) {
-        userid = user.uid;  }
-    })
     function writeUserData(user) {
         firebase.database().ref('student/' + user.uid).set(user).catch(error => {
             console.log(error.message)
