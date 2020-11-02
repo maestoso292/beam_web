@@ -44,14 +44,14 @@
         measurementId: "G-XKPK4PNM7W"
     };
     firebase.initializeApp(config);
-    async function writeStudentData() {
+    function writeStudentData() {
         var fName = document.getElementById("fName");
         var lName = document.getElementById("lName");
         var career = document.getElementById("career");
         var programme = document.getElementById("programme");
         var email = document.getElementById("email");
         var password = document.getElementById("password");
-        const promise = await firebase.auth().createUserWithEmailAndPassword(email.value, password.value);
+        const promise = firebase.auth().createUserWithEmailAndPassword(email.value, password.value);
         promise.catch(e => alert(e.message));
         firebase.auth().onAuthStateChanged(user => {  if(user) {
         userid = user.uid;  }
@@ -62,7 +62,7 @@
             Career: career.value,
             Programme: programme.value,
             Email: email.value,
-            uid: userid.value
+            uid: 2
         };
         writeUserData(student);
     };
