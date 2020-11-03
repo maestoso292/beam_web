@@ -142,7 +142,7 @@
             Career: career.value,
             Programme: programme.value,
             Email: email.value,
-            uid: 3
+            uid: 2
         };
 
         writeUserData(student);
@@ -193,15 +193,15 @@
         var lecturer = {
             FirstName: fName.value,
             LastName: lName.value,
-            Career: position.value,
-            Programme: password.value,
+            Position: position.value,
+            Faculty: faculty.value,
             Email: email.value,
             uid: 3
         };
 
-        writeUserData(lecturer);
+        writeUserData1(lecturer);
     };
-    function writeUserData(user) {
+    function writeUserData1(user) {
         firebase.database().ref("lecturer/" + user.uid).set(user).catch(error => {
             console.log(error.message)
         });
@@ -232,9 +232,9 @@
             mid: mID
         };
 
-        writeUserData(modules);
+        writeUserData1(modules);
     };
-    function writeUserData(user) {
+    function writeUserData2(user) {
         firebase.database().ref("modules/" + user.mid).set(user).catch(error => {
             console.log(error.message)
         });
@@ -280,9 +280,9 @@
             module_id: module_id
         };
 
-        writeUserData(timetable);
+        writeUserData3(timetable);
     };
-    function writeUserData(user) {
+    function writeUserData3(user) {
         firebase.database().ref("timetable/" + user.day + "/" + user.time).set(user).catch(error => {
             console.log(error.message)
         });
@@ -303,7 +303,7 @@
             <option value="COMP1001">App Dev</option>
             <option value="COMP1002">AI</option>
         </select><br>
-        <input type = "button" onclick="writeTimetableData()" id = "Psubmit" value ="Submit">
+            <input type = "button" onclick="writePlanData()" id = "Psubmit" value ="Submit">
     </div>
 </script>
 <!-- Write data on Plan -->
@@ -315,9 +315,9 @@
             plan: plan.value,
             Pmodule: Pmodule.value,
         };
-        writeUserData(plans);
+        writeUserData4(plans);
     };
-    function writeUserData(user) {
+    function writeUserData4(user) {
         firebase.database().ref("plan/" + user.plan + "/" + user.Pmodule).set(user).catch(error => {
             console.log(error.message)
         });
@@ -343,9 +343,9 @@
             session_id: session_id
         };
 
-        writeUserData(session);
+        writeUserData5(session);
     };
-    function writeUserData(user) {
+    function writeUserData5(user) {
         firebase.database().ref("plan/" + user.moduleID + "/" + user.session_id).set(user).catch(error => {
             console.log(error.message)
         });
