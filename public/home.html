@@ -10,13 +10,15 @@
 </head>
 <body>
 <div id="app" style="margin-top: 50px;">
-
     <nav style="background-color: lightskyblue;">
         <div>
             <ul>
                 <li> <router-link class="nav-link" to="/"> Home </router-link> </li>
                 <li> <router-link class="nav-link" to="student"> Student </router-link> </li>
                 <li> <router-link class="nav-link" to="lecturer"> Lecturer </router-link> </li>
+                <li> <router-link class="nav-link" to="modules"> Module </router-link> </li>
+                <li> <router-link class="nav-link" to="plan"> Academic Plan </router-link> </li>
+                <li> <router-link class="nav-link" to="record"> Attendance Record </router-link> </li>
                 <li> <router-link class="nav-link" to="timetable"> Timetable </router-link> </li>
                 <li><input type = "button" onclick="logOut()" id = "logout" value ="Log Out"></li>
             </ul>
@@ -30,9 +32,8 @@
 <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
-<!-- Firebase functions -->
+<!-- Connecting to Firebase Realtime Database -->
 <script>
-    var userid;
     var config = {
         apiKey: "AIzaSyBmrrr9ShVMaeS4aNV6gdK52fovQnLd1eA",
         authDomain: "beam-5845a.firebaseapp.com",
@@ -44,47 +45,61 @@
         measurementId: "G-XKPK4PNM7W"
     };
     firebase.initializeApp(config);
-    function writeStudentData() {
-        var fName = document.getElementById("fName");
-        var lName = document.getElementById("lName");
-        var career = document.getElementById("career");
-        var programme = document.getElementById("programme");
-        var email = document.getElementById("email");
-        var password = document.getElementById("password");
-        const promise = firebase.auth().createUserWithEmailAndPassword(email.value, password.value);
-        promise.catch(e => alert(e.message));
-        firebase.auth().onAuthStateChanged(user => {  if(user) {
-        userid = user.uid;  }
-        })
-        var student = {
-            FirstName: fName.value,
-            LastName: lName.value,
-            Career: career.value,
-            Programme: programme.value,
-            Email: email.value,
-            uid: 2
-        };
-        writeUserData(student);
-    };
-    function writeUserData(user) {
-        firebase.database().ref('student/' + user.uid).set(user).catch(error => {
-            console.log(error.message)
-        });
-    };
 </script>
+<!-- Referencing the components to respective template -->
 <script>
-    function logOut(){
-        firebase.auth().signOut();
-        window.location.href = 'index.html';
+    var Home = {
+        template: "#home-template"
+    };
+    var Student = {
+        template: "#student-template"
+    };
+    var Lecturer = {
+        template: "#lecturer-template"
+    };
+    var Modules = {
+        template: "#module-template"
+    };
+    var Timetable = {
+        template: "#timetable-template"
+    };
+    var Plan = {
+        template: "#plan-template"
+    };
+    var Record = {
+        template: "#record-template"
+    };
+    var NotFoundComponent = {
+        template: "#notFound-template"
     }
-
 </script>
-</body>
-<!-- Home Component -->
+<!-- Routing path for navigation bar -->
+<script>
+    var routes = [
+        { path: '/', component: Home },
+        { path: '/student', component: Student },
+        { path: '/lecturer', component: Lecturer },
+        { path: '/modules', component: Modules },
+        { path: '/plan', component: Plan },
+        { path: '/record', component: Record },
+        { path: '/timetable', component: Timetable },
+    ];
+
+    var router = new VueRouter({
+        routes: routes,
+        mode: 'history',
+        base: '/'
+    });
+    var app = new Vue({
+        el: '#app',
+        router: router
+    })
+</script>
+<!-- Home Template -->
 <script type="text/x-template" id="home-template">
     <div><h1>Home</h1><p>This is BEAM Home.</p></div>
 </script>
-<!-- Student Component -->
+<!-- Student Template -->
 <script type="text/x-template" id="student-template">
     <div><h1>Update Student Information</h1>
         <label for="fName">First Name:</label>
@@ -110,54 +125,242 @@
         <input type = "button" onclick="writeStudentData()" id = "submit" value ="Submit">
     </div>
 </script>
-<!-- Lecturer Component -->
+<!-- Write data on Student -->
+<script>
+    function writeStudentData() {
+        var fName = document.getElementById("fName");
+        var lName = document.getElementById("lName");
+        var career = document.getElementById("career");
+        var programme = document.getElementById("programme");
+        var email = document.getElementById("email");
+        var password = document.getElementById("password");
+        const promise = firebase.auth().createUserWithEmailAndPassword(email.value, password.value);
+        promise.catch(e => alert(e.message));
+        var student = {
+            FirstName: fName.value,
+            LastName: lName.value,
+            Career: career.value,
+            Programme: programme.value,
+            Email: email.value,
+            uid: 3
+        };
+
+        writeUserData(student);
+    };
+    function writeUserData(user) {
+        firebase.database().ref("student/" + user.uid).set(user).catch(error => {
+            console.log(error.message)
+        });
+    };
+</script>
+<!-- Lecturer Template -->
 <script type="text/x-template" id="lecturer-template">
-    <div><h1>Update Lecturer Information</h1><p>This is for lecturer.</p></div>
+    <div><h1>Update Lecturer Information</h1>
+        <label for="LfName">First Name:</label>
+        <input type="text" id = "LfName" placeholder="First Name"><br>
+        <label for="LlName">Last Name:</label>
+        <input type="text" id = "LlName" placeholder="Last Name"><br>
+        <label for="position">Choose a position:</label>
+        <select id="position" name="position">
+            <option value="Assistant Professor">Assistant Professor</option>
+            <option value="Associate Professor">Associate Professor</option>
+            <option value="Professor">Professor</option>
+        </select><br>
+        <label for="faculty">Choose a faculty:</label>
+        <select id="faculty" name="faculty">
+            <option value="Computer Science">Computer Science</option>
+            <option value="Business">Business</option>
+            <option value="Engineering">Engineering</option>
+        </select><br>
+        <label for="Lemail">Email:</label>
+        <input type="email" id = "Lemail" placeholder="Email">
+        <label for="Lpassword">Password:</label>
+        <input type="password" id = "Lpassword" placeholder="Password">
+        <input type = "button" onclick="writeLecturerData()" id = "Lsubmit" value ="Submit">
+    </div>
+</script>
+<!-- Write data on Lecturer -->
+<script>
+    function writeLecturerData() {
+        var fName = document.getElementById("LfName");
+        var lName = document.getElementById("LlName");
+        var position = document.getElementById("position");
+        var faculty = document.getElementById("faculty");
+        var email = document.getElementById("Lemail");
+        var password = document.getElementById("Lpassword");
+        const promise = firebase.auth().createUserWithEmailAndPassword(email.value, password.value);
+        promise.catch(e => alert(e.message));
+        var lecturer = {
+            FirstName: fName.value,
+            LastName: lName.value,
+            Career: position.value,
+            Programme: password.value,
+            Email: email.value,
+            uid: 3
+        };
+
+        writeUserData(lecturer);
+    };
+    function writeUserData(user) {
+        firebase.database().ref("lecturer/" + user.uid).set(user).catch(error => {
+            console.log(error.message)
+        });
+    };
+</script>
+<!-- Modules Component -->
+<script type="text/x-template" id="module-template">
+    <div><h1>Update Module Information</h1>
+        <label for="mID">Module ID:</label>
+        <input type="text" id = "mID" placeholder="Module ID"><br>
+        <label for="Mname">Module Name:</label>
+        <input type="text" id = "Mname" placeholder="Module Name"><br>
+        <label for="number">Number of Students:</label>
+        <input type="number" id = "number" placeholder="Number of Students"><br>
+        <!-- Lecturers teaching the module should be here -->
+        <input type = "button" onclick="writeModulesData()" id = "Msubmit" value ="Submit">
+    </div>
+</script>
+<!-- Write data on Modules -->
+<script>
+    function writeModulesData() {
+        var mID = document.getElementById("mID");
+        var Mname = document.getElementById("Mname");
+        var number = document.getElementById("number");
+        var modules = {
+            Mname: Mname.value,
+            number: number,
+            mid: mID
+        };
+
+        writeUserData(modules);
+    };
+    function writeUserData(user) {
+        firebase.database().ref("modules/" + user.mid).set(user).catch(error => {
+            console.log(error.message)
+        });
+    };
 </script>
 <!-- Timetable Component -->
 <script type="text/x-template" id="timetable-template">
-    <div><h1>Schedule Timetable</h1><p>This is for timetable.</p></div>
+    <div><h1>Update Timetable</h1>
+        <label for="day">Choose a day:</label>
+        <select id="day" name="day">
+            <option value="monday">Monday</option>
+            <option value="tuesday">Tuesday</option>
+            <option value="wednesday">Wednesday</option>
+            <option value="thursday">Thursday</option>
+            <option value="friday">Friday</option>
+        </select><br>
+        <label for="time">Choose a time (start):</label>
+        <select id="time" name="time">
+            <option value="0900">0900</option>
+            <option value="1000">1000</option>
+            <option value="1100">1100</option>
+            <option value="1200">1200</option>
+            <option value="1300">1300</option>
+            <option value="1400">1400</option>
+            <option value="1500">1500</option>
+            <option value="1500">1600</option>
+            <option value="1500">1700</option>
+        </select><br>
+        <label for="module_id">Module ID:</label>
+        <input type="module_id" id = "module_id" placeholder="Module IF">
+        <input type = "button" onclick="writeTimetableData()" id = "Tsubmit" value ="Submit">
+    </div>
+</script>
+<!-- Write data on Timetable -->
+<script>
+    function writeTimetableData() {
+        var day = document.getElementById("day");
+        var time = document.getElementById("time");
+        var module_id = document.getElementById("module_id");
+        var timetable = {
+            day: day.value,
+            time: time.value,
+            module_id: module_id
+        };
+
+        writeUserData(timetable);
+    };
+    function writeUserData(user) {
+        firebase.database().ref("timetable/" + user.day + "/" + user.time).set(user).catch(error => {
+            console.log(error.message)
+        });
+    };
+</script>
+<!-- Plan Component -->
+<script type="text/x-template" id="plan-template">
+    <div><h1>Update Academic Plan</h1>
+        <label for="plan">Choose an academic plan:</label>
+        <select id="plan" name="plan">
+            <option value="Computer Science">Computer Science</option>
+            <option value="Business">Business</option>
+            <option value="Engineering">Engineering</option>
+        </select><br>
+        <label for="Pmodule">Choose a module:</label>
+        <select id="Pmodule" name="Pmodule">
+            <option value="COMP1000">Web Dev</option>
+            <option value="COMP1001">App Dev</option>
+            <option value="COMP1002">AI</option>
+        </select><br>
+        <input type = "button" onclick="writeTimetableData()" id = "Psubmit" value ="Submit">
+    </div>
+</script>
+<!-- Write data on Plan -->
+<script>
+    function writePlanData() {
+        var plan = document.getElementById("plan");
+        var Pmodule = document.getElementById("Pmodule");
+        var plans = {
+            plan: plan.value,
+            Pmodule: Pmodule.value,
+        };
+        writeUserData(plans);
+    };
+    function writeUserData(user) {
+        firebase.database().ref("plan/" + user.plan + "/" + user.Pmodule).set(user).catch(error => {
+            console.log(error.message)
+        });
+    };
+</script>
+<!-- Record Component -->
+<script type="text/x-template" id="record-template">
+    <div><h1>Attendance Record</h1>
+        <label for="moduleID">Module ID:</label>
+        <input type="text" id = "moduleID"><br>
+        <label for="session_id">Session ID:</label>
+        <input type="text" id = "session_id"><br>
+        <input type = "button" onclick="writeRecordData()" id = "Rsubmit" value ="Submit">
+    </div>
+</script>
+<!-- Write data on Record -->
+<script>
+    function writeRecordData() {
+        var moduleID = document.getElementById("moduleID");
+        var session_id = document.getElementById("session_id");
+        var session = {
+            moduleID: moduleID,
+            session_id: session_id
+        };
+
+        writeUserData(session);
+    };
+    function writeUserData(user) {
+        firebase.database().ref("plan/" + user.moduleID + "/" + user.session_id).set(user).catch(error => {
+            console.log(error.message)
+        });
+    };
 </script>
 <!-- 404 Not found component -->
 <script type="text/x-template" id="notFound-template">
-    <div><h1>404 Not Found. <a href = "home.html">Return to Home.</h1></div>
+    <div><h1>404 Not Found. <a href = "home.html">Return to Home.</a></h1></div>
 </script>
-<!-- Referencing the components to template -->
+<!-- Logout -->
 <script>
-    var Home = {
-        template: "#home-template"
-    };
-    var Student = {
-        template: "#student-template"
-    };
-    var Lecturer = {
-        template: "#lecturer-template"
-    };
-    var Timetable = {
-        template: "#timetable-template"
-    };
-    var NotFoundComponent = {
-        template: "#notFound-template"
+    function logOut(){
+        firebase.auth().signOut();
+        window.location.href = 'index.html';
     }
-</script>
-<!-- Routing path for navigation bar -->
-<script>
-    var routes = [
-        { path: '/', component: Home },
-        { path: '/student', component: Student },
-        { path: '/lecturer', component: Lecturer },
-        { path: '/timetable', component: Timetable },
-    ];
-
-    var router = new VueRouter({
-        routes: routes,
-        mode: 'history',
-        base: '/'
-    });
-    var app = new Vue({
-        el: '#app',
-        router: router
-    })
 </script>
 </body>
 </html>
