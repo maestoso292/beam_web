@@ -216,6 +216,8 @@
         <input type="text" id = "Mname" placeholder="Module Name"><br>
         <label for="number">Number of Students:</label>
         <input type="number" id = "number" placeholder="Number of Students"><br>
+        <label for="mplan">Academic Plan:</label>
+        <input type="text" id = "mplan" placeholder="Academic Plan"><br>
         <!-- Lecturers teaching the module should be here -->
         <input type = "button" onclick="writeModulesData()" id = "Msubmit" value ="Submit">
     </div>
@@ -229,10 +231,10 @@
         var modules = {
             Mname: Mname.value,
             number: number,
-            mid: mID
+            mid: mID.value
         };
 
-        writeUserData1(modules);
+        writeUserData2(modules);
     };
     function writeUserData2(user) {
         firebase.database().ref("modules/" + user.mid).set(user).catch(error => {
@@ -327,7 +329,7 @@
 <script type="text/x-template" id="record-template">
     <div><h1>Attendance Record</h1>
         <label for="moduleID">Module ID:</label>
-        <input type="text" id = "moduleID"><br>
+        <input type="text" id = "moduleID" ><br>
         <label for="session_id">Session ID:</label>
         <input type="text" id = "session_id"><br>
         <input type = "button" onclick="writeRecordData()" id = "Rsubmit" value ="Submit">
@@ -339,14 +341,14 @@
         var moduleID = document.getElementById("moduleID");
         var session_id = document.getElementById("session_id");
         var session = {
-            moduleID: moduleID,
-            session_id: session_id
+            moduleID: moduleID.value,
+            session_id: session_id.value
         };
 
         writeUserData5(session);
     };
     function writeUserData5(user) {
-        firebase.database().ref("plan/" + user.moduleID + "/" + user.session_id).set(user).catch(error => {
+        firebase.database().ref("record/" + user.moduleID + "/" + user.session_id).set(user).catch(error => {
             console.log(error.message)
         });
     };
