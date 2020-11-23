@@ -13,17 +13,18 @@
     <nav style="background-color: lightskyblue;">
         <div>
             <ul>
-                <li> <router-link class="nav-link" to="/"> Home </router-link> </li>
-                <li> <router-link class="nav-link" to="student"> Student </router-link> </li>
-                <li> <router-link class="nav-link" to="lecturer"> Lecturer </router-link> </li>
-                <li> <router-link class="nav-link" to="modules"> Module </router-link> </li>
-                <li> <router-link class="nav-link" to="plan"> Academic Plan </router-link> </li>
-                <li> <router-link class="nav-link" to="record"> Attendance Record </router-link> </li>
-                <li> <router-link class="nav-link" to="timetable"> Timetable </router-link> </li>
+                <li> <router-link event = "mouseover" to="/"> Home </router-link> </li>
+                <li> <router-link event = "mouseover" to="student"> Student </router-link> </li>
+                <li> <router-link event = "mouseover" to="lecturer"> Lecturer </router-link> </li>
+                <li> <router-link event = "mouseover" to="modules"> Module </router-link> </li>
+                <li> <router-link event = "mouseover" to="plan"> Academic Plan </router-link> </li>
+                <li> <router-link event = "mouseover" to="record"> Attendance Record </router-link> </li>
+                <li> <router-link event = "mouseover" to="timetable"> Timetable </router-link> </li>
                 <li><input type = "button" onclick="logOut()" id = "logout" value ="Log Out"></li>
             </ul>
         </div>
     </nav>
+
     <div style="margin-top: 20px;">
         <router-view></router-view>
     </div>
@@ -69,20 +70,18 @@
     var Record = {
         template: "#record-template"
     };
-    var NotFoundComponent = {
-        template: "#notFound-template"
-    }
 </script>
-<!-- Routing path for navigation bar -->
+<!-- Routing paths for navigation bar -->
 <script>
     var routes = [
-        { path: '/', component: Home },
+        { path: '/', component: Home},
         { path: '/student', component: Student },
         { path: '/lecturer', component: Lecturer },
         { path: '/modules', component: Modules },
         { path: '/plan', component: Plan },
         { path: '/record', component: Record },
         { path: '/timetable', component: Timetable },
+        { path: "*", component: Home }
     ];
 
     var router = new VueRouter({
@@ -90,10 +89,11 @@
         mode: 'history',
         base: '/'
     });
+
     var app = new Vue({
         el: '#app',
-        router: router
-    })
+        router: router,
+    }).$mount('#app')
 </script>
 <!-- Home Template -->
 <script type="text/x-template" id="home-template">
@@ -352,10 +352,6 @@
             console.log(error.message)
         });
     };
-</script>
-<!-- 404 Not found component -->
-<script type="text/x-template" id="notFound-template">
-    <div><h1>404 Not Found. <a href = "home.html">Return to Home.</a></h1></div>
 </script>
 <!-- Logout -->
 <script>
