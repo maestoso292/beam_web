@@ -115,9 +115,6 @@
         </select><br>
         <label for="programme">Choose a programme:</label>
         <select id="programme" name="programme">
-            <option value="Computer Science">Computer Science</option>
-            <option value="Business">Business</option>
-            <option value="Engineering">Engineering</option>
         </select><br>
         <label for="email">Email:</label>
         <input type="email" id = "email" placeholder="Email">
@@ -360,6 +357,24 @@
         firebase.auth().signOut();
         window.location.href = 'index.html';
     }
+</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    jQuery(document).ready(function($){
+        var courses = {
+                'Foundation' : ['FIS', 'FIA'],
+                'Undergraduate' : ['CS', 'BS', 'EG'],
+                'Postgraduate' : ['Law', 'Philosophy']
+            }
+        var $courses = $('#programme');
+            $('#career').change(function () {
+            var career = $(this).val(), crse = courses[career] || [];
+            var html = $.map(crse, function(crs){
+                return '<option value="' + crs + '">' + crs + '</option>'
+            }).join('');
+            $courses.html(html)
+        });
+    });
 </script>
 </body>
 </html>
