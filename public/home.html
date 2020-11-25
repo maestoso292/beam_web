@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://unpkg.com/vue-router"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Beam | Admin</title>
 </head>
 <body>
@@ -70,6 +71,9 @@
     var Record = {
         template: "#record-template"
     };
+    var NotFound = {
+        template: "#notfound-template"
+    }
 </script>
 <!-- Routing paths for navigation bar -->
 <script>
@@ -81,7 +85,6 @@
         { path: '/plan', component: Plan },
         { path: '/record', component: Record },
         { path: '/timetable', component: Timetable },
-        { path: "*", component: Home }
     ];
 
     var router = new VueRouter({
@@ -107,14 +110,13 @@
         <label for="lName">Last Name:</label>
         <input type="text" id = "lName" placeholder="Last Name"><br>
         <label for="career">Choose a career:</label>
-        <select id="career" name="career">
+        <select id="career" name="career" onchange = 'dropdown()'>
             <option value="Foundation">Foundation</option>
             <option value="Undergraduate">Undergraduate</option>
             <option value="Postgraduate">Postgraduate</option>
         </select><br>
         <label for="programme">Choose a programme:</label>
-        <select id="programme" name="programme">
-        </select><br>
+        <select id="programme" name="programme"></select><br>
         <label for="email">Email:</label>
         <input type="email" id = "email" placeholder="Email">
         <label for="password">Password:</label>
@@ -149,6 +151,24 @@
             console.log(error.message)
         });
     };
+</script>
+<!-- change programme based on career -->
+<script>
+    function dropdown() {
+        $(document).ready(function () {
+
+            $("#career").change(function () {
+                var val = $(this).val();
+                $("#programme").html(options[val]);
+            });
+            var options = [
+                "<option value='FIS'>FIS</option><option value='FIA'>FIA</option>",
+                "<option value='CSAI'>CSAI</option><option value='SE'>SE</option>",
+                "<option value='BS'>BS</option><option value='EG'>EG</option>"
+            ];
+
+        });
+    }
 </script>
 <!-- Lecturer Template -->
 <script type="text/x-template" id="lecturer-template">
@@ -213,8 +233,6 @@
         <input type="text" id = "Mname" placeholder="Module Name"><br>
         <label for="number">Number of Students:</label>
         <input type="number" id = "number" placeholder="Number of Students"><br>
-        <label for="mplan">Academic Plan:</label>
-        <input type="text" id = "mplan" placeholder="Academic Plan"><br>
         <!-- Lecturers teaching the module should be here -->
         <input type = "button" onclick="writeModulesData()" id = "Msubmit" value ="Submit">
     </div>
@@ -291,19 +309,34 @@
 <script type="text/x-template" id="plan-template">
     <div><h1>Update Academic Plan</h1>
         <label for="plan">Choose an academic plan:</label>
-        <select id="plan" name="plan">
+        <select id="plan" name="plan" onchange="dropdown1()">
             <option value="Computer Science">Computer Science</option>
             <option value="Business">Business</option>
             <option value="Engineering">Engineering</option>
         </select><br>
         <label for="Pmodule">Choose a module:</label>
         <select id="Pmodule" name="Pmodule">
-            <option value="COMP1000">Web Dev</option>
-            <option value="COMP1001">App Dev</option>
-            <option value="COMP1002">AI</option>
         </select><br>
             <input type = "button" onclick="writePlanData()" id = "Psubmit" value ="Submit">
     </div>
+</script>
+<!-- change module based on plan -->
+<script>
+    function dropdown1() {
+        $(document).ready(function () {
+
+            $("#plan").change(function () {
+                var val = $(this).val();
+                $("#Pmodule").html(options[val]);
+            });
+            var options = [
+                "<option value='Web'>Web</option><option value='Mobile'>Mobile</option>",
+                "<option value='Presentation'>Presentation</option><option value='Public Speaking'>Public Speaking</option>",
+                "<option value='Fluids'>Fluids</option><option value='Mechanics'>Mechanics</option>"
+            ];
+
+        });
+    }
 </script>
 <!-- Write data on Plan -->
 <script>
@@ -350,29 +383,23 @@
         });
     };
 </script>
+<script type="text/x-template" id="notfound-template">
+    <div><h1>404 Not Found. <a href="index.html">Return to Home</a></h1>
+    </div>
+</script>
 <!-- Logout -->
 <script>
     function logOut(){
         firebase.auth().signOut();
         window.location.href = 'index.html';
     }
-</script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script>
-    jQuery(document).ready(function($){
-        var courses = {
-                'Foundation' : ['FIS', 'FIA'],
-                'Undergraduate' : ['CS', 'BS', 'EG'],
-                'Postgraduate' : ['Law', 'Philosophy']
-            }
-        var $courses = $('#programme');
-            $('#career').change(function () {
-            var career = $(this).val(), crse = courses[career] || [];
-            var html = $.map(crse, function(crs){
-                return '<option value="' + crs + '">' + crs + '</option>'
-            }).join('');
-            $courses.html(html)
-        });
+    var user = firebase.auth().currentUser;
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // User is signed in.
+        } else {
+            window.location.href = 'index.html';
+        }
     });
 </script>
 </body>
