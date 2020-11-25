@@ -44,7 +44,7 @@
             window.location.href = 'home.html';
         }
     });
-    auth.setPersistence(firebase.auth.Auth.Persistence.NONE)
+    auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
         .then(function() {
             return firebase.auth().signInWithEmailAndPassword(email, password);
         });
