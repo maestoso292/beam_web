@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://unpkg.com/vue-router"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Beam | Admin</title>
 </head>
 <body>
@@ -92,7 +91,7 @@
         mode: 'history',
         base: '/'
     });
-
+    
     var app = new Vue({
         el: '#app',
         router: router,
@@ -102,6 +101,7 @@
 <script type="text/x-template" id="home-template">
     <div><h1>Home</h1><p>This is BEAM Home.</p></div>
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!-- Student Template -->
 <script type="text/x-template" id="student-template">
     <div><h1>Update Student Information</h1>
@@ -109,14 +109,8 @@
         <input type="text" id = "fName" placeholder="First Name"><br>
         <label for="lName">Last Name:</label>
         <input type="text" id = "lName" placeholder="Last Name"><br>
-        <label for="career">Choose a career:</label>
-        <select id="career" name="career" onchange = 'dropdown()'>
-            <option value="Foundation">Foundation</option>
-            <option value="Undergraduate">Undergraduate</option>
-            <option value="Postgraduate">Postgraduate</option>
-        </select><br>
-        <label for="programme">Choose a programme:</label>
-        <select id="programme" name="programme"></select><br>
+        <label for="lName">Programme:</label>
+        <input type="text" id = "programme" placeholder="Programme"><br>
         <label for="email">Email:</label>
         <input type="email" id = "email" placeholder="Email">
         <label for="password">Password:</label>
@@ -129,7 +123,6 @@
     function writeStudentData() {
         var fName = document.getElementById("fName");
         var lName = document.getElementById("lName");
-        var career = document.getElementById("career");
         var programme = document.getElementById("programme");
         var email = document.getElementById("email");
         var password = document.getElementById("password");
@@ -138,7 +131,6 @@
         var student = {
             FirstName: fName.value,
             LastName: lName.value,
-            Career: career.value,
             Programme: programme.value,
             Email: email.value,
             uid: 2
@@ -151,24 +143,14 @@
             console.log(error.message)
         });
     };
-</script>
 <!-- change programme based on career -->
-<script>
-    function dropdown() {
-        $(document).ready(function () {
+    var $career = $( '#career' ),
+        $programme = $( '#programme' ),
+        $options = $programme.find( 'programme' );
 
-            $("#career").change(function () {
-                var val = $(this).val();
-                $("#programme").html(options[val]);
-            });
-            var options = [
-                "<option value='FIS'>FIS</option><option value='FIA'>FIA</option>",
-                "<option value='CSAI'>CSAI</option><option value='SE'>SE</option>",
-                "<option value='BS'>BS</option><option value='EG'>EG</option>"
-            ];
-
-        });
-    }
+    $career.on( 'change', function() {
+        $programme.html( $options.filter( '[value="' + this.value + '"]' ) );
+    } ).trigger( 'change' );
 </script>
 <!-- Lecturer Template -->
 <script type="text/x-template" id="lecturer-template">
@@ -308,35 +290,13 @@
 <!-- Plan Component -->
 <script type="text/x-template" id="plan-template">
     <div><h1>Update Academic Plan</h1>
-        <label for="plan">Choose an academic plan:</label>
-        <select id="plan" name="plan" onchange="dropdown1()">
-            <option value="Computer Science">Computer Science</option>
-            <option value="Business">Business</option>
-            <option value="Engineering">Engineering</option>
-        </select><br>
-        <label for="Pmodule">Choose a module:</label>
-        <select id="Pmodule" name="Pmodule">
+        <label for="plan">Academic Plan:</label>
+        <input type="text" id = "plan" placeholder="Academic Plan"><br>
+        <label for="Pmodule">Module ID:</label>
+        <input type="text" id = "Pmodule" placeholder="Module ID"><br>
         </select><br>
             <input type = "button" onclick="writePlanData()" id = "Psubmit" value ="Submit">
     </div>
-</script>
-<!-- change module based on plan -->
-<script>
-    function dropdown1() {
-        $(document).ready(function () {
-
-            $("#plan").change(function () {
-                var val = $(this).val();
-                $("#Pmodule").html(options[val]);
-            });
-            var options = [
-                "<option value='Web'>Web</option><option value='Mobile'>Mobile</option>",
-                "<option value='Presentation'>Presentation</option><option value='Public Speaking'>Public Speaking</option>",
-                "<option value='Fluids'>Fluids</option><option value='Mechanics'>Mechanics</option>"
-            ];
-
-        });
-    }
 </script>
 <!-- Write data on Plan -->
 <script>
@@ -357,7 +317,7 @@
 </script>
 <!-- Record Component -->
 <script type="text/x-template" id="record-template">
-    <div><h1>Attendance Record</h1>
+    <div><h1>Create Academic Sessions</h1>
         <label for="moduleID">Module ID:</label>
         <input type="text" id = "moduleID" ><br>
         <label for="session_id">Session ID:</label>
