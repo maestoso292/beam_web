@@ -20,6 +20,7 @@
                 <li> <router-link event = "mouseover" to="plan"> Academic Plan </router-link> </li>
                 <li> <router-link event = "mouseover" to="record"> Attendance Record </router-link> </li>
                 <li> <router-link event = "mouseover" to="timetable"> Timetable </router-link> </li>
+                <li> <router-link event = "mouseover" to="lm"> Lecture's Module </router-link> </li>
                 <li><input type = "button" onclick="logOut()" id = "logout" value ="Log Out"></li>
             </ul>
         </div>
@@ -70,9 +71,12 @@
     var Record = {
         template: "#record-template"
     };
+    var lecture_module = {
+        template: "#lm-template"
+    };
     var NotFound = {
         template: "#notfound-template"
-    }
+    };
 </script>
 <!-- Routing paths for navigation bar -->
 <script>
@@ -84,6 +88,7 @@
         { path: '/plan', component: Plan },
         { path: '/record', component: Record },
         { path: '/timetable', component: Timetable },
+        { path: '/lm', component: lecture_module }
     ];
 
     var router = new VueRouter({
@@ -339,6 +344,34 @@
     };
     function writeUserData5(user) {
         firebase.database().ref("record/" + user.moduleID + "/" + user.session_id).set(user).catch(error => {
+            console.log(error.message)
+        });
+    };
+</script>
+<!-- Lecturer_Module Component -->
+<script type="text/x-template" id="lm-template">
+    <div><h1>Assign Modules to Lecturers</h1>
+        <label for="lec">Lecturer ID</label>
+        <input type="text" id = "lec" placeholder="Lecturer ID"><br>
+        <label for="Lmodule">Module ID:</label>
+        <input type="text" id = "Lmodule" placeholder="Module ID"><br>
+        </select><br>
+        <input type = "button" onclick="writeLMData()" id = "lmsubmit" value ="Submit">
+    </div>
+</script>
+<!-- Write data on Lecturer_Module -->
+<script>
+    function writeLMData() {
+        var lec = document.getElementById("lec");
+        var lmodule = document.getElementById("Lmodule");
+        var plans = {
+            Lecturer_ID: lec.value,
+            Module_ID: Lmodule.value,
+        };
+        writeUserData6(plans);
+    };
+    function writeUserData6(user) {
+        firebase.database().ref("lecturer_module/" + user.Lecturer_ID + "/" + user.Module_ID).set(user).catch(error => {
             console.log(error.message)
         });
     };
