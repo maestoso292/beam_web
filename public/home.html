@@ -283,7 +283,7 @@
         writeUserData3(timetable);
     };
     function writeUserData3(user) {
-        firebase.database().ref("timetable/" + user.day + "/" + user.time).set(user).catch(error => {
+        firebase.database().ref("timetable/" + user.day + "/" + user.time + "/" + user.module_id ).set(user).catch(error => {
             console.log(error.message)
         });
     };
