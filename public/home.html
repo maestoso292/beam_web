@@ -138,13 +138,13 @@
             LastName: lName.value,
             Programme: programme.value,
             Email: email.value,
-            uid: "123@nottingham.edu"
+            key: email.value.split('.').join(',')
         };
 
         writeUserData(student);
     };
     function writeUserData(user) {
-        firebase.database().ref("student/" + user.uid).set(user).catch(error => {
+        firebase.database().ref("student/" + user.key).set(user).catch(error => {
             console.log(error.message)
         });
     };
@@ -200,12 +200,13 @@
             Position: position.value,
             Faculty: faculty.value,
             Email: email.value,
+            key: email.value.split('.').join(',')
         };
 
         writeUserData1(lecturer);
     };
     function writeUserData1(user) {
-        firebase.database().ref("lecturer/" + user.Email).set(user).catch(error => {
+        firebase.database().ref("lecturer/" + user.key).set(user).catch(error => {
             console.log(error.message)
         });
     };
