@@ -96,7 +96,7 @@
         mode: 'history',
         base: '/'
     });
-    
+
     var app = new Vue({
         el: '#app',
         router: router,
@@ -138,7 +138,7 @@
             LastName: lName.value,
             Programme: programme.value,
             Email: email.value,
-            uid: 2
+            uid: email.value
         };
 
         writeUserData(student);
@@ -148,7 +148,7 @@
             console.log(error.message)
         });
     };
-<!-- change programme based on career -->
+    <!-- change programme based on career -->
     var $career = $( '#career' ),
         $programme = $( '#programme' ),
         $options = $programme.find( 'programme' );
@@ -200,7 +200,7 @@
             Position: position.value,
             Faculty: faculty.value,
             Email: email.value,
-            uid: 3
+            uid: email.value
         };
 
         writeUserData1(lecturer);
@@ -296,7 +296,7 @@
         <label for="Pmodule">Module ID:</label>
         <input type="text" id = "Pmodule" placeholder="Module ID"><br>
         </select><br>
-            <input type = "button" onclick="writePlanData()" id = "Psubmit" value ="Submit">
+        <input type = "button" onclick="writePlanData()" id = "Psubmit" value ="Submit">
     </div>
 </script>
 <!-- Write data on Plan -->
