@@ -134,6 +134,7 @@
         firebase.auth().createUserWithEmailAndPassword(email.value, password.value)
             .then((userCredential) => {
                 var userUid = userCredential.user.uid;
+                console.log(userUid);
                 var student = {
                     FirstName: fName.value,
                     LastName: lName.value,
