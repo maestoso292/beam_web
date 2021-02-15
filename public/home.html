@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://unpkg.com/vue-router"></script>
-    <title>Beam</title>
+    <title>Beam | Admin</title>
 </head>
 <body>
 <div id="app" style="margin-top: 50px;">
@@ -117,7 +117,7 @@
         <label for="lName">Programme:</label>
         <input type="text" id = "programme" placeholder="Programme"><br>
         <label for="email">Email:</label>
-        <input type="email" id = "email" placeholder="User Email">
+        <input type="email" id = "email" placeholder="Email">
         <label for="password">Password:</label>
         <input type="password" id = "password" placeholder="Password">
         <input type = "button" onclick="writeStudentData()" id = "submit" value ="Submit">
@@ -134,36 +134,17 @@
         firebase.auth().createUserWithEmailAndPassword(email.value, password.value)
             .then((userCredential) => {
                 var userUid = userCredential.user.uid;
-                console.log(userUid);
                 var student = {
                     FirstName: fName.value,
                     LastName: lName.value,
                     Programme: programme.value,
-                    Email: email.value,
-                    key: email.value.split('.').join(',')
+                    Email: email.value
                 };
                 firebase.database().ref("student/" + userUid).set(student).catch(error => {
                     console.log(error.message);
                 });
             })
             .catch(e => alert(e.message));
-           /*
-        promise.catch(e => alert(e.message));
-        var student = {
-            FirstName: fName.value,
-            LastName: lName.value,
-            Programme: programme.value,
-            Email: email.value,
-            key: email.value.split('.').join(',')
-        };
-
-        writeUserData(student);
-    };
-    function writeUserData(user) {
-        firebase.database().ref("student/" + user.key).set(user).catch(error => {
-            console.log(error.message)
-        });
-        */
     };
     <!-- change programme based on career -->
     var $career = $( '#career' ),
@@ -209,23 +190,21 @@
         var faculty = document.getElementById("faculty");
         var email = document.getElementById("Lemail");
         var password = document.getElementById("Lpassword");
-        const promise = firebase.auth().createUserWithEmailAndPassword(email.value, password.value);
-        promise.catch(e => alert(e.message));
-        var lecturer = {
-            FirstName: fName.value,
-            LastName: lName.value,
-            Position: position.value,
-            Faculty: faculty.value,
-            Email: email.value,
-            key: email.value.split('.').join(',')
-        };
-
-        writeUserData1(lecturer);
-    };
-    function writeUserData1(user) {
-        firebase.database().ref("lecturer/" + user.key).set(user).catch(error => {
-            console.log(error.message)
-        });
+        firebase.auth().createUserWithEmailAndPassword(email.value, password.value)
+            .then((userCredential) => {
+                var userUid = userCredential.user.uid;
+                var lecturer = {
+                    FirstName: fName.value,
+                    LastName: lName.value,
+                    Position: position.value,
+                    Faculty: faculty.value,
+                    Email: email.value
+                };
+                firebase.database().ref("lecturer/" + userUid).set(lecturer).catch(error => {
+                    console.log(error.message);
+                });
+            })
+            .catch(e => alert(e.message));
     };
 </script>
 <!-- Modules Component -->
