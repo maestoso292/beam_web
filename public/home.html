@@ -143,6 +143,12 @@
                 firebase.database().ref("student/" + userUid).set(student).catch(error => {
                     console.log(error.message);
                 });
+                var userRole = {
+                    Role: "Student"
+                }
+                firebase.database().ref("users/" + userUid).set(userRole).catch(error => {
+                    console.log(error.message);
+                });
             })
             .catch(e => alert(e.message));
     };
@@ -201,6 +207,12 @@
                     Email: email.value
                 };
                 firebase.database().ref("lecturer/" + userUid).set(lecturer).catch(error => {
+                    console.log(error.message);
+                });
+                var userRole = {
+                    Role: "Lecturer"
+                }
+                firebase.database().ref("users/" + userUid).set(userRole).catch(error => {
                     console.log(error.message);
                 });
             })
