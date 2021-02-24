@@ -236,13 +236,14 @@
 <script>
     function writeModulesData() {
         var mID = document.getElementById("mID").value;
-        var mName = document.getElementById("mName");
+        var mName = document.getElementById("mName").value;
         var mPlan = document.getElementById("mPlan").value;
         var moduleType = document.getElementById("moduleType").value;
-        var modules = {
-            name: mName.value
-        };
-        firebase.database().ref("modules/" + mID).set(modules).catch(e => alert(e.message));
+        if (mID === "" || mName === "" || mPlan === "" || moduleType === "") {
+            alert("Please fill in all fields");
+            return false;
+        }
+        firebase.database().ref("modules/" + mID).set(mName).catch(e => alert(e.message));
         firebase.database().ref("plan/" + mPlan + "/" + moduleType + "/" + mID).set(modules).catch(e => alert(e.message));
     };
     function removeModulesData() {
@@ -266,18 +267,19 @@
 <!-- Write data on Record -->
 <script>
     function writeRecordData() {
-        var moduleID = document.getElementById("moduleID");
-        var session_id = document.getElementById("session_id");
+        var moduleID = document.getElementById("moduleID").value;
+        var session_id = document.getElementById("session_id").value;
+        if (moduleID === "" || session_id === "") {
+            alert("Please fill in all fields");
+            return false;
+        }
         var session = {
-            moduleID: moduleID.value,
-            session_id: session_id.value
+            moduleID: moduleID,
+            session_id: session_id
         };
         firebase.database().ref("record/" + session.moduleID + "/" + session.session_id).set(session).catch(e => alert(e.message));
+        firebase.database().ref("module_session/" + session.moduleID + "/" + session.session_id).set(session).catch(e => alert(e.message));
     };
-</script>
-<script type="text/x-template" id="notfound-template">
-    <div><h1>404 Not Found. <a href="index.html">Return to Home</a></h1>
-    </div>
 </script>
 <!-- Timetable Component -->
 <script type="text/x-template" id="timetable-template">
@@ -286,13 +288,13 @@
         <input type="text" id = "date" placeholder="Date">
         <label for="module_id">Module ID:</label>
         <input type="text" id = "module_id" placeholder="Module ID">
-        <label for="module_id">Session Type:</label>
+        <label for="sessionType">Session Type:</label>
         <input type="text" id = "sessionType" placeholder="Session Type">
-        <label for="module_id">Status:</label>
+        <label for="status">Status:</label>
         <input type="text" id = "status" placeholder="Status">
-        <label for="module_id">Time Begin:</label>
+        <label for="time_begin">Time Begin:</label>
         <input type="text" id = "time_begin" placeholder="Time Begin">
-        <label for="module_id">Time End:</label>
+        <label for="time_end">Time End:</label>
         <input type="text" id = "time_end" placeholder="Time End">
         <input type = "button" onclick="writeTimetableData()" id = "Tsubmit" value ="Submit">
     </div>
@@ -301,17 +303,21 @@
 <script>
     function writeTimetableData() {
         var date = document.getElementById("date").value;
-        var module_id = document.getElementById("module_id");
-        var sessionType = document.getElementById("sessionType");
-        var status = document.getElementById("status");
-        var time_begin = document.getElementById("time_begin");
-        var time_end = document.getElementById("time_end");
+        var module_id = document.getElementById("module_id").value;
+        var sessionType = document.getElementById("sessionType").value;
+        var status = document.getElementById("status").value;
+        var time_begin = document.getElementById("time_begin").value;
+        var time_end = document.getElementById("time_end").value;
+        if (date === "" || module_id === "" || sessionType === "" || status === "" || time_begin === "" || time_end === "") {
+            alert("Please fill in all fields");
+            return false;
+        }
         var timetable = {
-            module_id: module_id.value,
-            sessionType: sessionType.value,
-            status: status.value,
-            time_begin: time_begin.value,
-            time_end: time_end.value
+            module_id: module_id,
+            sessionType: sessionType,
+            status: status,
+            time_begin: time_begin,
+            time_end: time_end
         };
         firebase.database().ref("timetable/" + date + "/" + timetable.module_id ).push(timetable).catch(e => alert(e.message));
     };
