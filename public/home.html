@@ -3,31 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="./style.css">
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://unpkg.com/vue-router"></script>
     <title>Beam | Admin</title>
 </head>
 <body>
-<div id="app" style="margin-top: 50px;">
-    <nav style="background-color: lightskyblue;">
+<!-- Single Page Application appears here -->
+<div id="app">
+    <!-- Navigation Bar appears here -->
+    <nav class = "navbar">
         <div>
             <ul>
-                <li> <router-link event = "mouseover" to="/" id = "Home"> Home </router-link> </li>
-                <li> <router-link event = "mouseover" to="student" id = "Student"> Student </router-link> </li>
-                <li> <router-link event = "mouseover" to="lecturer" id = "Lecturer"> Lecturer </router-link> </li>
-                <li> <router-link event = "mouseover" to="modules" id = "Module"> Module </router-link> </li>
-                <li> <router-link event = "mouseover" to="record" id = "Attendance Record"> Attendance Record </router-link> </li>
-                <li> <router-link event = "mouseover" to="timetable" id = "Timetable"> Timetable </router-link> </li>
+                <li> <router-link event = "mouseover" to="/" id = "Home" onmouseover = "hideDefaultComponent()"> Home </router-link> </li>
+                <li> <router-link event = "mouseover" to="student" id = "Student" onmouseover = "hideDefaultComponent()"> Student </router-link> </li>
+                <li> <router-link event = "mouseover" to="lecturer" id = "Lecturer" onmouseover = "hideDefaultComponent()"> Lecturer </router-link> </li>
+                <li> <router-link event = "mouseover" to="modules" id = "Module" onmouseover = "hideDefaultComponent()"> Module </router-link> </li>
+                <li> <router-link event = "mouseover" to="record" id = "Attendance Record" onmouseover = "hideDefaultComponent()"> Attendance Record </router-link> </li>
+                <li> <router-link event = "mouseover" to="timetable" id = "Timetable" onmouseover = "hideDefaultComponent()"> Timetable </router-link> </li>
                 <li><input type = "button" onclick="logOut()" id = "logout" value ="Log Out"></li>
             </ul>
         </div>
     </nav>
-
-    <div style="margin-top: 20px;">
+    <!-- Component appears here -->
+    <div class = "component">
+        <!-- Default component (Same as Home) which appears at page load, will be hidden when other components are loaded -->
+        <div id = "default-component"><h1>Home</h1><p>This is BEAM Home.</p></div>
         <router-view></router-view>
     </div>
 </div>
+<!-- Hides Default Component (Same as Home) when other component is loaded -->
+<script>
+    function hideDefaultComponent() {
+        document.getElementById("default-component").style.display = 'none';
+    }
+</script>
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-auth.js"></script>
@@ -80,18 +90,19 @@
         { path: '/plan', component: Plan },
         { path: '/record', component: Record },
         { path: '/timetable', component: Timetable },
+        { path: '', redirect: '/' },
     ];
 
     var router = new VueRouter({
         routes: routes,
-        mode: 'history',
+        mode: 'hash',
         base: '/'
     });
 
     var app = new Vue({
         el: '#app',
         router: router,
-    }).$mount('#app')
+    })
 </script>
 <!-- Home Template -->
 <script type="text/x-template" id="home-template">
@@ -243,7 +254,10 @@
             alert("Please fill in all fields");
             return false;
         }
-        firebase.database().ref("modules/" + mID).set(mName).catch(e => alert(e.message));
+        var modules = {
+            name: mName
+        }
+        firebase.database().ref("modules/" + mID).set(modules).catch(e => alert(e.message));
         firebase.database().ref("plan/" + mPlan + "/" + moduleType + "/" + mID).set(modules).catch(e => alert(e.message));
     };
     function removeModulesData() {
