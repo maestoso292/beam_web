@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="./style.css" t>
     <title>Beam | Login</title>
 </head>
 <body>
-<div class="container">
+<div class = "login-container">
     <h1>Beam Administration Login</h1>
     <div class="textbox">
         <input type="email" id = "email" placeholder="Email">
@@ -16,7 +16,7 @@
         <input type="password" id = "password" placeholder="Password">
     </div>
     <br>
-    <input type = "button" onclick="login()" id = "login" value ="Login" class="button"></button>
+    <input type = "button" onclick="login()" id = "login" value ="Login" class="button">
 </div>
 <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-auth.js"></script>
@@ -39,6 +39,7 @@
         const promise = auth.signInWithEmailAndPassword(email.value, password.value);
         promise.catch(e => alert(e.message));
     }
+
     auth.onAuthStateChanged(user => {
         if(user) {
             window.location.href = 'home.html';
@@ -46,7 +47,7 @@
     });
     auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
         .then(function() {
-            return firebase.auth().signInWithEmailAndPassword(email, password);
+            return auth.signInWithEmailAndPassword(email, password);
         });
 </script>
 </body>
