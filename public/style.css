@@ -1,1 +1,15 @@
+#app {
+    margin-top: 50px;
+}
+
+#app .navbar, .login-container {
+    background-color: lightskyblue;
+}
+
+#app .component {
+    margin-top: 20px;
+}
+
+.login-container .textbox {
+}
 
