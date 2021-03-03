@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -73,3 +74,20 @@ input[type=button] {
     border-radius: 8px;
     font-size: 30px;
 }
+=======
+#app {
+    margin-top: 50px;
+}
+
+#app .navbar, .login-container {
+    background-color: lightskyblue;
+}
+
+#app .component {
+    margin-top: 20px;
+}
+
+.login-container .textbox {
+}
+
+>>>>>>> bd2e7cb47c9f862362bfefba545a6930ff6bd95f
