@@ -43,12 +43,12 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-.container h1 {
+.login-container h1 {
     margin: 75px 0 125px 0;
     font-size: 50px;
     text-align: center;
 }
-.container .textbox {
+.login-container .textbox {
     height: 50px;
     width: 400px;
     margin: 30px auto;
