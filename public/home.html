@@ -15,16 +15,23 @@
     <nav class = "navbar">
         <div>
             <ul>
-                <li> <router-link event = "mouseover" to="/" id = "Home" onmouseover = "hideDefaultComponent()"> Home </router-link> </li>
-                <li> <router-link event = "mouseover" to="student" id = "Student" onmouseover = "hideDefaultComponent()"> Student </router-link> </li>
-                <li> <router-link event = "mouseover" to="lecturer" id = "Lecturer" onmouseover = "hideDefaultComponent()"> Lecturer </router-link> </li>
-                <li> <router-link event = "mouseover" to="modules" id = "Module" onmouseover = "hideDefaultComponent()"> Module </router-link> </li>
-                <li> <router-link event = "mouseover" to="record" id = "Attendance Record" onmouseover = "hideDefaultComponent()"> Attendance Record </router-link> </li>
-                <li> <router-link event = "mouseover" to="timetable" id = "Timetable" onmouseover = "hideDefaultComponent()"> Timetable </router-link> </li>
-                <li><input type = "button" onclick="logOut()" id = "logout" value ="Log Out"></li>
+                <li> <router-link to="/" id = "Home" onclick = "hideDefaultComponent()"
+                    style="text-decoration: none; color: inherit;"> Home </router-link> </li>
+                <li> <router-link to="student" id = "Student" onclick = "hideDefaultComponent()"
+                    style="text-decoration: none; color: inherit;"> Student </router-link> </li>
+                <li> <router-link to="lecturer" id = "Lecturer" onclick = "hideDefaultComponent()"
+                    style="text-decoration: none; color: inherit;"> Lecturer </router-link> </li>
+                <li> <router-link to="modules" id = "Module" onclick = "hideDefaultComponent()"
+                    style="text-decoration: none; color: inherit;"> Module </router-link> </li>
+                <li> <router-link to="record" id = "Attendance Record" onclick = "hideDefaultComponent()"
+                    style="text-decoration: none; color: inherit;"> Attendance Record </router-link> </li>
+                <li> <router-link to="timetable" id = "Timetable" onclick = "hideDefaultComponent()"
+                    style="text-decoration: none; color: inherit;"> Timetable </router-link> </li>
+                <!-- <li><input type = "button" onclick="logOut()" id = "logout" value ="Log Out"></li> -->
             </ul>
         </div>
     </nav>
+    <input type = "button" onclick="logOut()" id = "logout" value ="Log Out">
     <!-- Component appears here -->
     <div class = "component">
         <!-- Default component (Same as Home) which appears at page load, will be hidden when other components are loaded -->
@@ -106,12 +113,15 @@
 </script>
 <!-- Home Template -->
 <script type="text/x-template" id="home-template">
-    <div><h1>Home</h1><p>This is BEAM Home.</p></div>
+    <div class="home-template">
+        <h1>Home</h1><p>This is BEAM Home.</p>
+    </div>
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!-- Student Template -->
 <script type="text/x-template" id="student-template">
-    <div><h1>Student Registration</h1>
+    <div class="student-template">
+        <h1>Student Registration</h1>
         <label for="fName">First Name:</label>
         <input type="text" id = "fName" placeholder="First Name"><br>
         <label for="lName">Last Name:</label>
@@ -119,9 +129,9 @@
         <label for="programme">Programme:</label>
         <input type="text" id = "programme" placeholder="Programme"><br>
         <label for="email">Email:</label>
-        <input type="email" id = "email" placeholder="Email">
+        <input type="email" id = "email" placeholder="Email"><br>
         <label for="password">Password:</label>
-        <input type="password" id = "password" placeholder="Password">
+        <input type="password" id = "password" placeholder="Password"><br>
         <input type = "button" onclick="writeStudentData()" id = "submit" value ="Submit">
     </div>
 </script>
@@ -167,7 +177,8 @@
 </script>
 <!-- Lecturer Template -->
 <script type="text/x-template" id="lecturer-template">
-    <div><h1>Lecturer Registration</h1>
+    <div class="lecturer-template">
+        <h1>Lecturer Registration</h1>
         <label for="LfName">First Name:</label>
         <input type="text" id = "LfName" placeholder="First Name"><br>
         <label for="LlName">Last Name:</label>
@@ -185,9 +196,9 @@
             <option value="Engineering">Engineering</option>
         </select><br>
         <label for="Lemail">Email:</label>
-        <input type="email" id = "Lemail" placeholder="Email">
+        <input type="email" id = "Lemail" placeholder="Email"><br>
         <label for="Lpassword">Password:</label>
-        <input type="password" id = "Lpassword" placeholder="Password">
+        <input type="password" id = "Lpassword" placeholder="Password"><br>
         <input type = "button" onclick="writeLecturerData()" id = "Lsubmit" value ="Submit">
     </div>
 </script>
@@ -225,7 +236,8 @@
 </script>
 <!-- Modules Component -->
 <script type="text/x-template" id="module-template">
-    <div><h1>Add or Remove Module</h1><br>
+    <div class="module-template">
+        <h1>Add or Remove Module</h1>
         <form>
         <label for="mID">Module ID:</label>
         <input type="text" id = "mID" placeholder="Module ID" required><br>
@@ -270,11 +282,12 @@
 </script>
 <!-- Record Component -->
 <script type="text/x-template" id="record-template">
-    <div><h1>Create Academic Sessions</h1>
+    <div class="record-template">
+        <h1>Create Academic Sessions</h1>
         <label for="moduleID">Module ID:</label>
-        <input type="text" id = "moduleID" ><br>
+        <input type="text" id = "moduleID" placeholder="Module ID"><br>
         <label for="session_id">Session ID:</label>
-        <input type="text" id = "session_id"><br>
+        <input type="text" id = "session_id" placeholder="Session ID"><br>
         <input type = "button" onclick="writeRecordData()" id = "Rsubmit" value ="Submit">
     </div>
 </script>
@@ -297,19 +310,20 @@
 </script>
 <!-- Timetable Component -->
 <script type="text/x-template" id="timetable-template">
-    <div><h1>Update Timetable Session</h1>
+    <div class=timetable-template>
+        <h1>Update Timetable Session</h1>
         <label for="date">Date:</label>
-        <input type="text" id = "date" placeholder="Date">
+        <input type="text" id = "date" placeholder="Date"><br>
         <label for="module_id">Module ID:</label>
-        <input type="text" id = "module_id" placeholder="Module ID">
+        <input type="text" id = "module_id" placeholder="Module ID"><br>
         <label for="sessionType">Session Type:</label>
-        <input type="text" id = "sessionType" placeholder="Session Type">
+        <input type="text" id = "sessionType" placeholder="Session Type"><br>
         <label for="status">Status:</label>
-        <input type="text" id = "status" placeholder="Status">
+        <input type="text" id = "status" placeholder="Status"><br>
         <label for="time_begin">Time Begin:</label>
-        <input type="text" id = "time_begin" placeholder="Time Begin">
+        <input type="text" id = "time_begin" placeholder="Time Begin"><br>
         <label for="time_end">Time End:</label>
-        <input type="text" id = "time_end" placeholder="Time End">
+        <input type="text" id = "time_end" placeholder="Time End"><br>
         <input type = "button" onclick="writeTimetableData()" id = "Tsubmit" value ="Submit">
     </div>
 </script>
