@@ -43,6 +43,10 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+.login-container {
+    width: 720px;
+    margin: 0 auto;
+}
 .login-container h1 {
     margin: 75px 0 125px 0;
     font-size: 50px;
@@ -73,6 +77,10 @@ table {
     border-radius: 8px;
     font-size: 30px;
 }
+#app {
+    width: 800px;
+    margin: 0 auto;
+}
 #app .navbar {
     min-width: 736px;
     margin: 50px auto 20px auto;
@@ -90,56 +98,76 @@ table {
 #app #logout {
     height: 50px;
     width: 120px;
-    display: block;
-    margin: 0 auto 50px 30px;
+    display: flex;
+    margin: 0 auto;
     border: 2px solid black;
     border-radius: 8px;
     font-size: 18px;
+    justify-content: center;
 }
 #app .component {
-    width: 620px;
-    padding-left: 30px;
+    width: 100%;
+    /* padding-left: 30px; */
+}
+#default-component , .home-template, .student-template,
+.lecturer-template, .module-template, .record-template,
+.timetable-template {
+    display: block;
+    margin: 0 auto;
 }
 #default-component h1 , .home-template h1, .student-template h1,
 .lecturer-template h1, .module-template h1, .record-template h1,
 .timetable-template h1 {
     font-size: 45px;
     margin: 20px 0;
+    text-align: center;
 }
 #default-component p, .home-template p {
     font-size: 20px;
+    text-align: center;
 }
 .student-template label, .lecturer-template label, 
 .module-template label, .record-template label,
 .timetable-template label {
+    text-align: right;
     display: inline-block;
     font-size: 20px;
     width: 200px;
-    margin: 10px 0;
-}
-#submit, #Lsubmit, #Add, #Remove, #Rsubmit, #Tsubmit {
-    margin: 20px 0;
-    height: 35px;
-    width: 100px;
-    display: inline-block;
-    border: 2px solid black;
-    border-radius: 8px;
-    font-size: 18px;
+    margin: 10px auto;
+    position: relative;
+    left: 24%;
 }
 #app input[type=text], #app input[type=email],
 #app input[type=password] {
+    display: inline-block;
     width: 200px;
     height: 25px;
     font-size: 15px;
     border: 1px solid black;
     border-radius: 5px;
-    padding-left: 10px;
+    padding-left: 15px;
+    position: relative;
+    left: 26%;
 }
 #app select {
-    width: 214px;
+    display: inline-block;
+    width: 219px;
     height: 30px;
     font-size: 15px;
     border: 1px solid black;
     border-radius: 5px;
     padding-left: 10px;
+    margin: 0 20px 0 20px;
+    position: relative;
+    left: 23.5%;
+}
+#submit, #Lsubmit, #Add, #Remove, #Rsubmit, #Tsubmit {
+    display: flex;
+    margin: 20px auto;
+    height: 35px;
+    width: 100px;
+    border: 2px solid black;
+    border-radius: 8px;
+    font-size: 18px;
+    justify-content: center;
 }
