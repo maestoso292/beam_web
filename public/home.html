@@ -23,8 +23,6 @@
                     style="text-decoration: none; color: inherit;"> Lecturer </router-link> </li>
                 <li> <router-link to="modules" id = "Module" onclick = "hideDefaultComponent()"
                     style="text-decoration: none; color: inherit;"> Module </router-link> </li>
-                <li> <router-link to="record" id = "Attendance Record" onclick = "hideDefaultComponent()"
-                    style="text-decoration: none; color: inherit;"> Attendance Record </router-link> </li>
                 <li> <router-link to="timetable" id = "Timetable" onclick = "hideDefaultComponent()"
                     style="text-decoration: none; color: inherit;"> Timetable </router-link> </li>
                 <!-- <li><input type = "button" onclick="logOut()" id = "logout" value ="Log Out"></li> -->
@@ -80,9 +78,6 @@
     var Plan = {
         template: "#plan-template"
     };
-    var Record = {
-        template: "#record-template"
-    };
     var Timetable = {
         template: "#timetable-template"
     };
@@ -95,7 +90,6 @@
         { path: '/lecturer', component: Lecturer },
         { path: '/modules', component: Modules },
         { path: '/plan', component: Plan },
-        { path: '/record', component: Record },
         { path: '/timetable', component: Timetable },
         { path: '', redirect: '/' },
     ];
@@ -278,34 +272,6 @@
         var moduleType = document.getElementById("moduleType").value;
         firebase.database().ref("modules/" + mID).remove().catch(e => alert(e.message));
         firebase.database().ref("plan/" + mPlan + "/" + moduleType + "/" + mID).remove().catch(e => alert(e.message));
-    };
-</script>
-<!-- Record Component -->
-<script type="text/x-template" id="record-template">
-    <div class="record-template">
-        <h1>Create Academic Sessions</h1>
-        <label for="moduleID">Module ID:</label>
-        <input type="text" id = "moduleID" placeholder="Module ID"><br>
-        <label for="session_id">Session ID:</label>
-        <input type="text" id = "session_id" placeholder="Session ID"><br>
-        <input type = "button" onclick="writeRecordData()" id = "Rsubmit" value ="Submit">
-    </div>
-</script>
-<!-- Write data on Record -->
-<script>
-    function writeRecordData() {
-        var moduleID = document.getElementById("moduleID").value;
-        var session_id = document.getElementById("session_id").value;
-        if (moduleID === "" || session_id === "") {
-            alert("Please fill in all fields");
-            return false;
-        }
-        var session = {
-            moduleID: moduleID,
-            session_id: session_id
-        };
-        firebase.database().ref("record/" + session.moduleID + "/" + session.session_id).set(session).catch(e => alert(e.message));
-        firebase.database().ref("module_session/" + session.moduleID + "/" + session.session_id).set(session).catch(e => alert(e.message));
     };
 </script>
 <!-- Timetable Component -->
