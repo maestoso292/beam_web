@@ -16,16 +16,15 @@
         <div>
             <ul>
                 <li> <router-link to="/" id = "Home" onclick = "hideDefaultComponent()"
-                    style="text-decoration: none; color: inherit;"> Home </router-link> </li>
+                                  style="text-decoration: none; color: inherit;"> Home </router-link> </li>
                 <li> <router-link to="student" id = "Student" onclick = "hideDefaultComponent()"
-                    style="text-decoration: none; color: inherit;"> Student </router-link> </li>
+                                  style="text-decoration: none; color: inherit;"> Student </router-link> </li>
                 <li> <router-link to="lecturer" id = "Lecturer" onclick = "hideDefaultComponent()"
-                    style="text-decoration: none; color: inherit;"> Lecturer </router-link> </li>
+                                  style="text-decoration: none; color: inherit;"> Lecturer </router-link> </li>
                 <li> <router-link to="modules" id = "Module" onclick = "hideDefaultComponent()"
-                    style="text-decoration: none; color: inherit;"> Module </router-link> </li>
+                                  style="text-decoration: none; color: inherit;"> Module </router-link> </li>
                 <li> <router-link to="timetable" id = "Timetable" onclick = "hideDefaultComponent()"
-                    style="text-decoration: none; color: inherit;"> Timetable </router-link> </li>
-                <!-- <li><input type = "button" onclick="logOut()" id = "logout" value ="Log Out"></li> -->
+                                  style="text-decoration: none; color: inherit;"> Timetable </router-link> </li>
             </ul>
         </div>
     </nav>
@@ -189,6 +188,8 @@
             <option value="Business">Business</option>
             <option value="Engineering">Engineering</option>
         </select><br>
+        <label for="set">Enter module set:</label>
+        <input type="text" id = "set" placeholder="Module Set"><br>
         <label for="Lemail">Email:</label>
         <input type="email" id = "Lemail" placeholder="Email"><br>
         <label for="Lpassword">Password:</label>
@@ -205,7 +206,8 @@
         var faculty = document.getElementById("faculty").value;
         var email = document.getElementById("Lemail").value;
         var password = document.getElementById("Lpassword").value;
-        if (fName === "" || lName === "" || position === "" || faculty === "" || email === "" || password === "") {
+        var set = document.getElementById("set").value;
+        if (fName === "" || lName === "" || position === "" || faculty === "" || email === "" || password === "" || set === "") {
             alert("Please fill in all fields");
             return false;
         }
@@ -221,11 +223,20 @@
                 };
                 firebase.database().ref("lecturer/" + userUid).set(lecturer).catch(e => alert(e.message));
                 var userRole = {
-                    Role: "Lecturer"
+                    Role: "Lecturer",
+                    set: set,
+                    Programme: faculty
                 }
                 firebase.database().ref("users/" + userUid).set(userRole).catch(e => alert(e.message));
-            })
-            .catch(e => alert(e.message));
+                var key = firebase.database().ref("plan/" + userRole.Programme);
+                var children = key.child(userRole.set);
+                children.once('value', (snapshot) => {
+                    snapshot.forEach((child) => {
+                        firebase.database().ref("users/" + userUid + "/modules").push(child.key).catch(e => alert(e.message));
+                        firebase.database().ref("modules/" + child.key + "/lecturer").push(userUid).catch(e => alert(e.message));
+                    });
+                });
+            }).catch(e => alert(e.message));
     };
 </script>
 <!-- Modules Component -->
@@ -233,19 +244,21 @@
     <div class="module-template">
         <h1>Add or Remove Module</h1>
         <form>
-        <label for="mID">Module ID:</label>
-        <input type="text" id = "mID" placeholder="Module ID" required><br>
-        <label for="mName">Module Name:</label>
-        <input type="text" id ="mName" placeholder="Module Name" required><br>
-        <label for="mPlan">Plan:</label>
-        <input type="text" id ="mPlan" placeholder="Plan Name" required><br>
-        <label for="moduleType">Module Type:</label>
-        <select id="moduleType" name="moduleType" required>
-            <option value="Core">Core</option>
-            <option value="Elective">Elective</option>
-        </select><br>
-        <input type = "button" onclick="writeModulesData()" id = "Add" value ="Add">
-        <input type = "button" onclick="removeModulesData()" id = "Remove" value ="Remove">
+            <label for="mID">Module ID:</label>
+            <input type="text" id = "mID" placeholder="Module ID" required><br>
+            <label for="mName">Module Name:</label>
+            <input type="text" id ="mName" placeholder="Module Name" required><br>
+            <label for="mPlan">Plan:</label>
+            <input type="text" id ="mPlan" placeholder="Plan Name" required><br>
+            <label for="moduleType">Module Type:</label>
+            <select id="moduleType" name="moduleType" required>
+                <option value="Core">Core</option>
+                <option value="Elective">Elective</option>
+            </select><br>
+            <label for="mSet">Set (Optional):</label>
+            <input type="text" id ="mSet" placeholder="Lecturer's Module Set"><br>
+            <input type = "button" onclick="writeModulesData()" id = "Add" value ="Add">
+            <input type = "button" onclick="removeModulesData()" id = "Remove" value ="Remove">
         </form>
     </div>
 </script>
@@ -256,6 +269,7 @@
         var mName = document.getElementById("mName").value;
         var mPlan = document.getElementById("mPlan").value;
         var moduleType = document.getElementById("moduleType").value;
+        var mSet = document.getElementById("mSet").value;
         if (mID === "" || mName === "" || mPlan === "" || moduleType === "") {
             alert("Please fill in all fields");
             return false;
@@ -265,6 +279,9 @@
         }
         firebase.database().ref("modules/" + mID).set(modules).catch(e => alert(e.message));
         firebase.database().ref("plan/" + mPlan + "/" + moduleType + "/" + mID).set(modules).catch(e => alert(e.message));
+        if (!(mSet ==="")){
+            firebase.database().ref("plan/" + mPlan + "/" + mSet + "/" + mID).set(modules).catch(e => alert(e.message));
+        }
     };
     function removeModulesData() {
         var mID = document.getElementById("mID").value;
@@ -314,6 +331,8 @@
             time_end: time_end
         };
         firebase.database().ref("timetable/" + date + "/" + timetable.module_id ).push(timetable).catch(e => alert(e.message));
+        firebase.database().ref("module_session/" + timetable.module_id ).push(timetable).catch(e => alert(e.message));
+        firebase.database().ref("module_session/" + timetable.module_id ).push(timetable).catch(e => alert(e.message));
     };
 </script>
 <!-- Logout -->
