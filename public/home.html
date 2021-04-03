@@ -166,6 +166,11 @@
                 });
             })
             .catch(e => alert(e.message));
+        document.getElementById("fName").value = '';
+        document.getElementById("lName").value = '';
+        document.getElementById("programme").value = '';
+        document.getElementById("email").value = '';
+        document.getElementById("password").value = '';
     };
 </script>
 <!-- Lecturer Template -->
@@ -237,6 +242,13 @@
                     });
                 });
             }).catch(e => alert(e.message));
+        document.getElementById("LfName").value = '';
+        document.getElementById("LlName").value = '';
+        document.getElementById("position").value = '';
+        document.getElementById("faculty").value = '';
+        document.getElementById("Lemail").value = '';
+        document.getElementById("Lpassword").value = '';
+        document.getElementById("set").value = '';
     };
 </script>
 <!-- Modules Component -->
@@ -282,6 +294,11 @@
         if (!(mSet ==="")){
             firebase.database().ref("plan/" + mPlan + "/" + mSet + "/" + mID).set(modules).catch(e => alert(e.message));
         }
+        document.getElementById("mID").value = '';
+        document.getElementById("mName").value = '';
+        document.getElementById("mPlan").value = '';
+        document.getElementById("moduleType").value = '';
+        document.getElementById("mSet").value = '';
     };
     function removeModulesData() {
         var mID = document.getElementById("mID").value;
@@ -289,6 +306,11 @@
         var moduleType = document.getElementById("moduleType").value;
         firebase.database().ref("modules/" + mID).remove().catch(e => alert(e.message));
         firebase.database().ref("plan/" + mPlan + "/" + moduleType + "/" + mID).remove().catch(e => alert(e.message));
+        document.getElementById("mID").value = '';
+        document.getElementById("mName").value = '';
+        document.getElementById("mPlan").value = '';
+        document.getElementById("moduleType").value = '';
+        document.getElementById("mSet").value = '';
     };
 </script>
 <!-- Timetable Component -->
@@ -333,6 +355,12 @@
         firebase.database().ref("timetable/" + date + "/" + timetable.module_id ).push(timetable).catch(e => alert(e.message));
         firebase.database().ref("module_session/" + timetable.module_id ).push(timetable).catch(e => alert(e.message));
         firebase.database().ref("module_session/" + timetable.module_id ).push(timetable).catch(e => alert(e.message));
+        document.getElementById("date").value = '';
+        document.getElementById("module_id").value = '';
+        document.getElementById("sessionType").value = '';
+        document.getElementById("status").value = '';
+        document.getElementById("time_begin").value = '';
+        document.getElementById("time_end").value = '';
     };
 </script>
 <!-- Logout -->
