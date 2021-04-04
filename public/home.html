@@ -233,7 +233,7 @@
                     Programme: faculty
                 }
                 firebase.database().ref("users/" + userUid).set(userRole).catch(e => alert(e.message));
-                var key = firebase.database().ref("plan/" + userRole.Programme, + '/' + userRole.set);
+                var key = firebase.database().ref("plan/" + userRole.Programme);
                 var children = key.child(userRole.set);
                 children.once('value', (snapshot) => {
                     snapshot.forEach((child) => {
