@@ -354,7 +354,7 @@
         };
         var newRef = firebase.database().ref("timetable/" + date + "/" + timetable.module_id ).push();
         newRef.set(timetable).catch(e => alert(e.message));
-        firebase.database().ref("module_session/" + timetable.module_id + "/" newRef.key).set(timetable).catch(e => alert(e.message));
+        firebase.database().ref("module_session/" + timetable.module_id + "/" + newRef.key).set(timetable).catch(e => alert(e.message));
         document.getElementById("date").value = '';
         document.getElementById("module_id").value = '';
         document.getElementById("sessionType").value = '';
