@@ -347,12 +347,14 @@
         }
         var timetable = {
             module_id: module_id,
+            session_id: "temp",
             sessionType: sessionType,
             status: status,
             time_begin: time_begin,
             time_end: time_end
         };
         var newRef = firebase.database().ref("timetable/" + date + "/" + timetable.module_id ).push();
+        timetable.session_id = newRef.key;
         newRef.set(timetable).catch(e => alert(e.message));
         firebase.database().ref("module_session/" + timetable.module_id + "/" + newRef.key).set(timetable).catch(e => alert(e.message));
         document.getElementById("date").value = '';
